@@ -6,6 +6,7 @@ from models.category import categories
 from schemas.schemas import Category
 from schemas.schemas import Category_Update
 import crawl as crawl
+import pandas as pd
 
 
 category = APIRouter()
@@ -100,19 +101,19 @@ def get_youngest_categories_endpoint():
 # crawl categories
 @category.get("/crawl-categories-test")
 def crawl_categories():
-    old_categories = get_categories()
+    old_categories = [i['id'] for i in get_categories()]
     new_categories = []
     all_cate_ids = [2]
     def get_cate(data):
         _id, parent_id = data
-
-        new_cate = crawl.get_data_from_api(crawl.data_url + str(_id),'category')
+        response = crawl.get_data_from_api2(crawl.data_url + str(_id))
+        new_cate = response['category']
         new_cate['parent_category'] = int(parent_id)
         new_cate['id'] = int(new_cate['id'])
-        if(new_cate not in old_categories):
+        if(new_cate['id'] not in old_categories):
             new_categories.append(new_cate)
 
-        df = crawl.get_data_from_api(crawl.data_url + str(_id), 'children_categories')
+        df = pd.DataFrame(response['children_categories'])
         if(not 'id' in df.columns):
             return len(new_categories)
 
@@ -131,7 +132,7 @@ def crawl_categories():
     return new_categories
 
 
-@category.get("/crawl-categories")
+@category.get("/crawl-categories", tags=["Crawl"])
 def crawl_categories_endpoint():
     result = crawl_categories()
     # print(result)

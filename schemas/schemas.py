@@ -57,7 +57,7 @@ class Product(BaseModel):
     image_src: str
     discount: int
     discount_label_html: str
-    episode: int
+    episode: str
     item_code: str
     author: str
     publisher: str
@@ -85,7 +85,7 @@ class Product_Update(BaseModel):
     image_src: str
     discount: int
     discount_label_html: str
-    episode: int
+    episode: str
     item_code: str
     author: str
     publisher: str
