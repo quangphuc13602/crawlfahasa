@@ -21,29 +21,6 @@ class Category_Update(BaseModel):
     keywords: str
     parent_category: int
 
-
-class Attribute(BaseModel):
-    id: Optional[int]
-    code: str
-    label: str
-
-
-class Attribute_Update(BaseModel):
-    code: str
-    label: str
-
-
-class Option(BaseModel):
-    id: Optional[int]
-    label: str
-    attribute_id: int
-
-
-class Option_Update(BaseModel):
-    label: str
-    attribute_id: int
-
-
 class Product(BaseModel):
     id: Optional[int]
     product_name: str
@@ -99,8 +76,3 @@ class Product_Update(BaseModel):
     use_guide: str
     translator: str
     category_id: int
-
-
-class Product_Option(BaseModel):
-    product_id: int
-    option_id: int

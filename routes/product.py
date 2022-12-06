@@ -3,9 +3,6 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from config.db import conn
 from models.product import products
-from models.option import options
-from models.attribute import attributes
-from models.product_option import products_options
 from schemas.schemas import Product
 from schemas.schemas import Product_Update
 from routes.category import category as cate
@@ -96,11 +93,11 @@ def get_products_by_price(min: int, max: int):
     return conn.execute(products.select().where(products.c.product_finalprice >= min and products.c.product_finalprice <= max))
 
 
-def get_products_by_genres(genres: str):
-    return conn.execute(select(products).where(products.c.id == products_options.c.product_id and
-                                       options.c.id == products_options.c.option_id and
-                                       attributes.c.id == options.c.attribute_id and
-                                       attributes.c.code == "genres" and options.c.label.likes('%' + genres + '%')))
+# def get_products_by_genres(genres: str):
+#     return conn.execute(select(products).where(products.c.id == products_options.c.product_id and
+#                                        options.c.id == products_options.c.option_id and
+#                                        attributes.c.id == options.c.attribute_id and
+#                                        attributes.c.code == "genres" and options.c.label.likes('%' + genres + '%')))
 
 
 @product.get("/products", tags=["Product"], response_model=list[Product])
@@ -152,10 +149,10 @@ def get_products_by_price_endpoint(min: int, max: int):
     return result
 
 
-@product.get("/products/genres/{genres}", tags=["Product Endpoint"], response_model=list[Product])
-def get_products_by_genres_endpoint(genres: str):
-    result = get_products_by_genres(genres)
-    return result
+# @product.get("/products/genres/{genres}", tags=["Product Endpoint"], response_model=list[Product])
+# def get_products_by_genres_endpoint(genres: str):
+#     result = get_products_by_genres(genres)
+#     return result
 
 # @product.get("/products_crawl", tags=["Crawl"])
 # def crawl_products():

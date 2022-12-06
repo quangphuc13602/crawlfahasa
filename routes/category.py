@@ -114,7 +114,7 @@ def crawl_categories():
             new_categories.append(new_cate)
 
         df = pd.DataFrame(response['children_categories'])
-        if(not 'id' in df.columns):
+        if(not 'id' in df.columns):                     
             return len(new_categories)
 
         cur_cate_ids = df['id'].values.tolist()
